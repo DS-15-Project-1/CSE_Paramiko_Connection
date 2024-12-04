@@ -14,8 +14,18 @@ def get_parquet(path):
 
 @app.route('/list_files')
 def list_files():
-    files = os.listdir('/mnt/code/output/*')
-    return jsonify(files)
+    base_dir = '/mnt/code/output/'
+    all_files = []
+    
+    for root, dirs, files in os.walk(base_dir):
+        for file in files:
+            relative_path = os.path.relpath(root, base_dir)
+            if relative_path == '.':
+                relative_path = ''
+            full_path = os.path.join(relative_path, file)
+            all_files.append(full_path)
+    
+    return jsonify(all_files)
 
 if __name__ == '__main__':
     print("Server starting...")

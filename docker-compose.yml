@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  server:
+    build: .
+    container_name: "parquet-server"
+    volumes:
+      - /mnt/:/mnt/
+    ports:
+      - "5000:5000"

@@ -14,7 +14,7 @@ def get_parquet(path):
 
 @app.route('/list_files')
 def list_files():
-    files = os.listdir('/mnt/code/output/')
+    files = os.listdir('/mnt/code/output/*')
     return jsonify(files)
 
 if __name__ == '__main__':

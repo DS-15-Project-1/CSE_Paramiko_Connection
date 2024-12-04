@@ -17,7 +17,7 @@ def list_files():
     base_dir = '/mnt/code/output/'
     all_files = []
     
-    for root, dirs, files in os.walk(base_dir):
+    for root, _, files in os.walk(base_dir):
         for file in files:
             relative_path = os.path.relpath(root, base_dir)
             if relative_path == '.':
@@ -26,6 +26,18 @@ def list_files():
             all_files.append(full_path)
     
     return jsonify(all_files)
+
+@app.route('/file/<filename>')
+def serve_specific_file(filename):
+    base_dir = '/mnt/code/output/'
+    
+    # Search for the file in the directory and its subdirectories
+    for root, _, files in os.walk(base_dir):
+        if filename in files:
+            file_path = os.path.join(root, filename)
+            return send_file(file_path, as_attachment=True)
+    
+    return "File not found", 404
 
 if __name__ == '__main__':
     print("Server starting...")
